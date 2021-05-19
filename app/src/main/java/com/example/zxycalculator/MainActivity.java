@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Button> ButtonNumbs = new ArrayList<Button>();
     Button buttondot, buttonC,buttonperc, buttonback, buttonadd, buttonsub, buttonmul,buttondiv,buttoneq;
     String exp = "";
+    Calculate cal = new Calculate();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,89 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // set the auxiliary button onClick method
+        buttonback.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view)
+            {
+                if (exp.length() > 1)
+                    exp = exp.substring(0, (exp.length() - 1));
+                else
+                    exp = "";
+                textView.setText(exp);
+            }
+        });
+
+        buttonC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp = "";
+                textView.setText(exp);
+            }
+        });
+
+        buttonperc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp += "%";
+                textView.setText(textView.getText() + "%");
+            }
+        });
+
+
+        // set calculator's operations onClick method
+        buttonadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp += "+";
+                textView.setText(textView.getText() + "+");
+            }
+        });
+
+        buttonsub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp += "-";
+                textView.setText(textView.getText() + "-");
+            }
+        });
+
+        buttonmul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp += "*";
+                textView.setText(textView.getText() + "×");
+            }
+        });
+
+        buttondiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp += "/";
+                textView.setText(textView.getText() + "÷");
+            }
+        });
+
+        // set get result operation
+        buttoneq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exp = cal.calExp(exp);
+                textView.setText(exp);
+            }
+        });
+
+        buttondot.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(textView.getText().length()==0){
+                    textView.setText("0.");
+                }
+                else{
+                    textView.setText(textView.getText()+".");
+                }
+            }
+        });
 
 
     }
