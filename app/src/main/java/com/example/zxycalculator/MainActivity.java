@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Button> ButtonNumbs = new ArrayList<Button>();
     Button buttondot, buttonC,buttonperc, buttonback, buttonadd, buttonsub, buttonmul,buttondiv,buttoneq;
     String exp = "";
+    boolean equalPushed = false;
     Calculate cal = new Calculate();
 
     @Override
@@ -50,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
             ButtonNumbs.get(i).setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view)
                 {
+                    if(equalPushed){
+                        exp = "";
+                        textView.setText("");
+                    }
                     if(exp.length()<10)
                     {
                         exp += Integer.toString(finalI);
-                        textView.setText(textView.getText() + Integer.toString(finalI));
+                        textView.setText(textView.getText()+Integer.toString(finalI));
                     }
                 }
             });
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         buttonadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(equalPushed) equalPushed = false;
                 exp += "+";
                 textView.setText(textView.getText() + "+");
             }
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         buttonsub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(equalPushed) equalPushed = false;
                 exp += "-";
                 textView.setText(textView.getText() + "-");
             }
@@ -108,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         buttonmul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(equalPushed) equalPushed = false;
                 exp += "*";
                 textView.setText(textView.getText() + "×");
             }
@@ -116,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         buttondiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(equalPushed) equalPushed = false;
                 exp += "/";
                 textView.setText(textView.getText() + "÷");
             }
@@ -127,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 exp = cal.calExp(exp);
                 textView.setText(exp);
+                equalPushed = true;
             }
         });
 

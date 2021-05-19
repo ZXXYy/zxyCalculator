@@ -41,14 +41,16 @@ public class Calculate {
             }
         }
         postfix.add(num);
-        postfix.add(String.valueOf(operator.peek()));
-        operator.pop();
+        while(!operator.empty())
+            postfix.add(String.valueOf(operator.pop()));
+
     }
 
     public double calPost(Queue<String> postfix){
         Stack<Double> resStk = new Stack<Double>();
         while(!postfix.isEmpty()){
             String temp = postfix.poll();
+            System.out.println(temp);
             if(isDigit(temp)){
                 if(isFraction(temp)){
                     if(temp.contains("%")){
@@ -56,7 +58,7 @@ public class Calculate {
                     }
                     else if(temp.contains(".")){
                         int index = temp.indexOf('.');
-                        int num1 = Integer.valueOf(temp.substring(0,index-1));
+                        int num1 = Integer.valueOf(temp.substring(0,index));
                         int num2 = Integer.valueOf(temp.substring(index+1));
                         resStk.push(num1+num2*1.0/Math.pow(0.1,temp.substring(index+1).length()));
                     }
