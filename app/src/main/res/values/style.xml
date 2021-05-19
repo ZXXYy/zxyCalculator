@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="buttonNum" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:background">#787878</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <style name="buttonOp" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:background">#FFA500</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">35dp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <style name="buttonExtra" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:background">#646464</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+
+</resources>
