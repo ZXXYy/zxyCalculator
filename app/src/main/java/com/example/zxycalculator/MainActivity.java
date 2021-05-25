@@ -1,6 +1,8 @@
 package com.example.zxycalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,28 +10,32 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     ArrayList<Button> ButtonNumbs = new ArrayList<Button>();
-    ArrayList<TextView> preTextViews = new ArrayList<TextView>();
+    LinkedList<String> preTextList = new LinkedList<String>();
     Button buttondot, buttonC,buttonperc, buttonback, buttonadd, buttonsub, buttonmul,buttondiv,buttoneq;
     String exp = "";
     boolean equalPushed = false;
     Calculate cal = new Calculate();
+
+    private RecyclerView mRecyclerView;
+    private ExprListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        preTextViews.add((TextView)findViewById(R.id.preTextView1));
-        preTextViews.add((TextView)findViewById(R.id.preTextView2));
-        preTextViews.add((TextView)findViewById(R.id.preTextView3));
-        preTextViews.add((TextView)findViewById(R.id.preTextView4));
-        preTextViews.add((TextView)findViewById(R.id.preTextView5));
-        preTextViews.add((TextView)findViewById(R.id.preTextView6));
+//        preTextViews.add((TextView)findViewById(R.id.preTextView1));
+//        preTextViews.add((TextView)findViewById(R.id.preTextView2));
+//        preTextViews.add((TextView)findViewById(R.id.preTextView3));
+//        preTextViews.add((TextView)findViewById(R.id.preTextView4));
+//        preTextViews.add((TextView)findViewById(R.id.preTextView5));
+//        preTextViews.add((TextView)findViewById(R.id.preTextView6));
 
         textView = (TextView) findViewById(R.id.textView);
 
@@ -144,14 +150,16 @@ public class MainActivity extends AppCompatActivity {
         buttoneq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String preExp = exp;
+                String preExp = (String) textView.getText();
+                exp = (String) textView.getText();
                 try{
+                    System.out.println(preExp);
+                    addPreTextView(preExp);
                     exp = cal.calExp(exp);
                 }catch(Exception e){
                     e.printStackTrace();
                     exp = "Error";
                 }
-                setPreTextView(preExp);
                 textView.setText(exp);
                 equalPushed = true;
             }
@@ -171,13 +179,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Get a handle to the RecyclerView.
+        mRecyclerView = findViewById(R.id.recyclerview);
+        // Create an adapter and supply the data to be displayed.
+        mAdapter = new ExprListAdapter(this, preTextList, textView);
+        // Connect the adapter with the RecyclerView.
+        mRecyclerView.setAdapter(mAdapter);
+        // Give the RecyclerView a default layout manager.
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
     }
 
-    public void setPreTextView(String preExp){
-        for(int i = preTextViews.size()-1;i>=1;i--){
-            preTextViews.get(i).setText(preTextViews.get(i-1).getText());
+    public void addPreTextView(String preExp){
+        int exprListSize = preTextList.size();
+
+        preTextList.addLast(preExp);
+        // Notify the adapter, that the data has changed.
+//        mRecyclerView.getAdapter().notifyItemInserted(exprListSize);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        // Scroll to the bottom.
+        mRecyclerView.smoothScrollToPosition(exprListSize);
+
+        for(String s:preTextList){
+            System.out.print(s+" ");
         }
-        preTextViews.get(0).setText(preExp);
+        System.out.println();
     }
 }

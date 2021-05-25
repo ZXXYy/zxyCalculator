@@ -12,8 +12,8 @@ public class Calculate {
     public Calculate(){
         precedence.put('+',1);
         precedence.put('-',1);
-        precedence.put('*',2);
-        precedence.put('/',2);
+        precedence.put('×',2);
+        precedence.put('÷',2);
     }
 
     public String calExp(String exp){
@@ -54,7 +54,7 @@ public class Calculate {
         Stack<Double> resStk = new Stack<Double>();
         while(!postfix.isEmpty()){
             String temp = postfix.poll();
-            System.out.println(temp);
+//            System.out.println(temp);
             if(isDigit(temp)){
                 if(isFraction(temp)){
                     if(temp.contains("%")){
@@ -87,10 +87,10 @@ public class Calculate {
                 else if(temp.equals("-")){
                     resStk.push(num2-num1);
                 }
-                else if(temp.equals("*")){
+                else if(temp.equals("×")){
                     resStk.push(num1*num2);
                 }
-                else if(temp.equals("/")){
+                else if(temp.equals("÷")){
                     if(num1==0) {
                         // ---To Finish--- handle error;
                         throw new ArithmeticException();
@@ -104,7 +104,7 @@ public class Calculate {
     }
 
     public boolean isDigit(String s){
-        return !(s.equals("+") || s.equals("-") || s.equals("/") || s.equals("*"));
+        return !(s.equals("+") || s.equals("-") || s.equals("÷") || s.equals("×"));
     }
     public boolean isFraction(String s){
         return s.contains(".") || s.contains("%");
