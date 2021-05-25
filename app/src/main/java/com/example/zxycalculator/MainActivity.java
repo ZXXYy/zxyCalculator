@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     ArrayList<Button> ButtonNumbs = new ArrayList<Button>();
+    ArrayList<TextView> preTextViews = new ArrayList<TextView>();
     Button buttondot, buttonC,buttonperc, buttonback, buttonadd, buttonsub, buttonmul,buttondiv,buttoneq;
     String exp = "";
     boolean equalPushed = false;
@@ -23,7 +24,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        preTextViews.add((TextView)findViewById(R.id.preTextView1));
+        preTextViews.add((TextView)findViewById(R.id.preTextView2));
+        preTextViews.add((TextView)findViewById(R.id.preTextView3));
+        preTextViews.add((TextView)findViewById(R.id.preTextView4));
+        preTextViews.add((TextView)findViewById(R.id.preTextView5));
+        preTextViews.add((TextView)findViewById(R.id.preTextView6));
+
         textView = (TextView) findViewById(R.id.textView);
+
         ButtonNumbs.add((Button) findViewById(R.id.button0));
         ButtonNumbs.add((Button) findViewById(R.id.button1));
         ButtonNumbs.add((Button) findViewById(R.id.button2));
@@ -54,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
                     if(equalPushed){
                         exp = "";
                         textView.setText("");
+                        equalPushed = false;
                     }
-                    if(exp.length()<10)
+                    if(exp.length()<21)
                     {
                         exp += Integer.toString(finalI);
                         textView.setText(textView.getText()+Integer.toString(finalI));
@@ -134,7 +144,14 @@ public class MainActivity extends AppCompatActivity {
         buttoneq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exp = cal.calExp(exp);
+                String preExp = exp;
+                try{
+                    exp = cal.calExp(exp);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    exp = "Error";
+                }
+                setPreTextView(preExp);
                 textView.setText(exp);
                 equalPushed = true;
             }
@@ -145,13 +162,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(textView.getText().length()==0){
                     textView.setText("0.");
+                    exp = "0." + exp;
                 }
                 else{
                     textView.setText(textView.getText()+".");
+                    exp += ".";
                 }
             }
         });
 
 
+    }
+
+    public void setPreTextView(String preExp){
+        for(int i = preTextViews.size()-1;i>=1;i--){
+            preTextViews.get(i).setText(preTextViews.get(i-1).getText());
+        }
+        preTextViews.get(0).setText(preExp);
     }
 }

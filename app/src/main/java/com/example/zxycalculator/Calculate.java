@@ -1,5 +1,6 @@
 package com.example.zxycalculator;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -18,13 +19,16 @@ public class Calculate {
     public String calExp(String exp){
         Queue<String> postfix = new LinkedList<String>();
         in2post(exp, postfix);
-        return Double.toString(calPost(postfix));
+        DecimalFormat dec = new DecimalFormat("0.00");
+        return dec.format(calPost(postfix));
     }
 
 
     public void in2post(String exp, Queue<String> postfix){
         Stack<Character> operator = new Stack<Character>();
         String num = "";
+        boolean hasNum = false;
+        exp = "0"+exp;
         for(int i = 0;i<exp.length();i++){
             if(exp.charAt(i)>='0' && exp.charAt(i)<='9' || exp.charAt(i)=='.' || exp.charAt(i)=='%'){
                 num += exp.charAt(i);
@@ -46,7 +50,7 @@ public class Calculate {
 
     }
 
-    public double calPost(Queue<String> postfix){
+    public double calPost(Queue<String> postfix) throws ArithmeticException{
         Stack<Double> resStk = new Stack<Double>();
         while(!postfix.isEmpty()){
             String temp = postfix.poll();
@@ -58,15 +62,19 @@ public class Calculate {
                     }
                     else if(temp.contains(".")){
                         int index = temp.indexOf('.');
-                        int num1 = Integer.valueOf(temp.substring(0,index));
-                        int num2 = Integer.valueOf(temp.substring(index+1));
-                        resStk.push(num1+num2*1.0/Math.pow(0.1,temp.substring(index+1).length()));
+                        double num1 = Double.valueOf(temp.substring(0,index));
+                        double num2 = Double.valueOf(temp.substring(index+1));
+                        resStk.push(num1+num2*1.0*Math.pow(0.1,temp.substring(index+1).length()));
                     }
                 }
                 else
                     resStk.push(Double.valueOf(temp));
             }
             else{
+                if(resStk.empty()){
+                    // ---To Finish--- handle error;
+                    return -1;
+                }
                 double num1 = resStk.pop();
                 if(resStk.empty()) {
                     // ---To Finish--- handle error;
@@ -83,10 +91,15 @@ public class Calculate {
                     resStk.push(num1*num2);
                 }
                 else if(temp.equals("/")){
+                    if(num1==0) {
+                        // ---To Finish--- handle error;
+                        throw new ArithmeticException();
+                    }
                     resStk.push(num2/num1);
                 }
             }
         }
+
         return resStk.peek();
     }
 
